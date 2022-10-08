@@ -25,21 +25,47 @@ router.post('/',async(req,res)=> {
         } else {
             res.status(200).json({
                 message: "Todo was inserted successfully"
-            })
-
+            });
         }
-
-    })
+    });
 
 });
 
 //POST MULTIPLE TODO-S
 router.post('/all',async(req,res)=>{
+    await Todo.insertMany(req.body,(err) => {
+        if (err) {
+            res.status(500).json({
+                error:'There was server side error'
+            });
+        } else {
+            res.status(200).json({
+                Message:" Todo's were insert successfully"
+            })
+        }
+    })
 
 });
 
 // PUT TODO
 router.put('/:id',async(req,res)=>{
+   await Todo.updateOne(
+    {_id: req.params.id}, 
+    {
+    $set: {
+        status: 'active',
+    },
+   }, (err) => {
+    if (err) {
+        res.status(500).json({
+            error: 'There was server side error'
+        });
+    } else {
+        res.status(200).json({
+            message: " Todo was update successfully"
+        });
+    }
+   });
 
 });
 
